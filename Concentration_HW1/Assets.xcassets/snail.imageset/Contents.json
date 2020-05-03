@@ -1,17 +1,17 @@
 {
   "images" : [
     {
-      "filename" : "toy.png",
+      "filename" : "snail.png",
       "idiom" : "universal",
       "scale" : "1x"
     },
     {
-      "filename" : "toy@2x.png",
+      "filename" : "snail@2x.png",
       "idiom" : "universal",
       "scale" : "2x"
     },
     {
-      "filename" : "toy@3x.png",
+      "filename" : "snail@3x.png",
       "idiom" : "universal",
       "scale" : "3x"
     }

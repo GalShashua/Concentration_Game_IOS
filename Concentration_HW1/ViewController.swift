@@ -9,7 +9,10 @@
 import UIKit
 
 class ViewController: UIViewController {
+    
+    @IBOutlet private var cardButtons: [UIButton]!
 
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view.
@@ -19,5 +22,10 @@ class ViewController: UIViewController {
     }
 
 
+    @IBAction func cardClicked(_ sender: UIButton) {
+         print("clicked")
+        let cardNumber = cardButtons.index(of: sender)
+        print("\(cardNumber)")
+    }
 }
 
