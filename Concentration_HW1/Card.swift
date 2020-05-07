@@ -10,7 +10,7 @@ import Foundation
 
 struct Card{
     var isClosed = true
-    var matching = false
+    var wasMatched = false
     var imageName = ""
     var id: Int
     

@@ -23,7 +23,7 @@ class ViewController: UIViewController {
     private var isGameOver = false
     
     private var imagesArray = [#imageLiteral(resourceName: "card_5"),#imageLiteral(resourceName: "card_6"),#imageLiteral(resourceName: "card_2"),#imageLiteral(resourceName: "card_8"),#imageLiteral(resourceName: "card_4"),#imageLiteral(resourceName: "card_1"),#imageLiteral(resourceName: "card_7"),#imageLiteral(resourceName: "card_3")]
-    var playableEmoji = [Int:UIImage]()
+   
     override func viewDidLoad() {
         super.viewDidLoad()
         numOfPairs = (cardButtons.count + 1) / 2
@@ -31,25 +31,9 @@ class ViewController: UIViewController {
         
         previouslySeenCards = Dictionary<Int, Int>()
         divideImagesForCards()
-  
-        for index in cardButtons.indices{
-            let card = cardsArray[index] // get the coresponding card from model
-            let button = cardButtons[index]
-            button.setBackgroundImage(#imageLiteral(resourceName: "depositphotos_294620642-stock-illustration-cute-safari-background-with-monkeyleaves (1)") , for: UIControl.State.normal)
-            button.backgroundColor = card.matching ?  ( #colorLiteral(red: 0.06274510175, green: 0, blue: 0.1921568662, alpha: 0.3961542694) ): #colorLiteral(red: 0.4666666687, green: 0.7647058964, blue: 0.2666666806, alpha: 1)
-        }
-        var castInt = Int(movesCounter)
-        abel.text = "Moves: \(castInt)"
-        if isGameOver{
-            for index in cardButtons.indices{
-                cardButtons[index].backgroundColor = #colorLiteral(red: 0.06274510175, green: 0, blue: 0.1921568662, alpha: 0.3961542694)
-            }
-        //    flipCountrLabel.text = ""
-            labelFinishedGame.text  = "Done. Another?"
-            labelFinishedGame.isHidden = false
-        } else {
-            labelFinishedGame.isHidden = true
-        }
+     updateCardDisplay()
+        updateLabelsDisplay()
+
     } //viewDidLoad
     
     
@@ -57,12 +41,12 @@ class ViewController: UIViewController {
         let idCardClicked = cardButtons.index(of: sender)
         
         //if the card not matched yet and he close now ->
-        if (cardsArray[idCardClicked!].matching == false && cardsArray[idCardClicked!].isClosed) {
+        if (cardsArray[idCardClicked!].wasMatched == false && cardsArray[idCardClicked!].isClosed) {
             movesCounter += 0.5
             if let matchIndex = indexOfOneAndOnlyFaceUpCard, matchIndex != idCardClicked {
                 if cardsArray[matchIndex].imageName == cardsArray[idCardClicked!].imageName{
-                    cardsArray[matchIndex].matching = true
-                    cardsArray[idCardClicked!].matching = true
+                    cardsArray[matchIndex].wasMatched = true
+                    cardsArray[idCardClicked!].wasMatched = true
                     
                 } else{
                     previouslySeenCards[cardsArray[idCardClicked!].id] = (previouslySeenCards[cardsArray[idCardClicked!].id] ?? -1) + 1
@@ -77,29 +61,22 @@ class ViewController: UIViewController {
                 cardsArray[idCardClicked!].isClosed = false
                 indexOfOneAndOnlyFaceUpCard = idCardClicked
             }
-               let matched = cardsArray.filter({!$0.matching}).count
+               let matched = cardsArray.filter({!$0.wasMatched}).count
                  if  matched == 0 {
                      self.isGameOver = true
                  }
         }
-        displayUpdate()
+        updateCardDisplay()
+        updateLabelsDisplay()
     }
-    
-    func emoji(for card: Card) -> UIImage {
-        if playableEmoji[card.id] == nil, imagesArray.count > 0 {
-            let randomIndex = Int(arc4random_uniform(UInt32(imagesArray.count)))
-            playableEmoji[card.id] = imagesArray.remove(at: randomIndex)
-        }
-        return playableEmoji[card.id] ?? #imageLiteral(resourceName: "download")
-    }
-    
-    
+
+
     @IBAction func newGame(_ sender: Any) {
         movesCounter=0
         Card.resetIdentifiers()
         cardsArray.removeAll()
         divideImagesForCards()
-        displayUpdate()
+        updateCardDisplay()
     }
     
     
@@ -107,58 +84,50 @@ class ViewController: UIViewController {
         for i in 1...numOfPairs {
                     var card1 = Card()
                     card1.imageName = "card_\(i)"
-                    print(card1.imageName)
-                    
-                    //create second card:
                     var card2 = Card()
                     card2.imageName = "card_\(i)"
-                    print(card2.imageName)
-                    
                     cardsArray.append(card1)
                     cardsArray.append(card2)
-                    
                 }
                 cardsArray.shuffle()
     }
     
     
-    func displayUpdate(){
-        for index in cardButtons.indices{
-            let card = cardsArray[index] // get the coresponding card from model
-            let button = cardButtons[index]
-            
+    func updateCardDisplay(){
+        var i = 0
+        for card in cardsArray{
             if card.isClosed{
-                if(card.matching)
+                if(card.wasMatched)
                 {
-                    cardButtons[index].setBackgroundImage( #imageLiteral(resourceName: "matched") , for: UIControl.State.normal)
-                    
+                    cardButtons[i].setBackgroundImage( #imageLiteral(resourceName: "matched") , for: UIControl.State.normal)
                 } else {
-                    button.setBackgroundImage( #imageLiteral(resourceName: "depositphotos_294620642-stock-illustration-cute-safari-background-with-monkeyleaves (1)") , for: UIControl.State.normal)
-                    button.backgroundColor = card.matching ?  (  #colorLiteral(red: 0.06274510175, green: 0, blue: 0.1921568662, alpha: 0.3961542694) ): #colorLiteral(red: 0.4666666687, green: 0.7647058964, blue: 0.2666666806, alpha: 1) //
+                    cardButtons[i].setBackgroundImage( #imageLiteral(resourceName: "depositphotos_294620642-stock-illustration-cute-safari-background-with-monkeyleaves (1)") , for: UIControl.State.normal)
+            //        cardButtons[i].backgroundColor = #colorLiteral(red: 0.4666666687, green: 0.7647058964, blue: 0.2666666806, alpha: 1)
                 }
             } else {
-                var imageForCard = cardsArray[index].imageName
-                print("image for cars issss \(imageForCard)")
-                button.setBackgroundImage(UIImage(named: imageForCard), for: UIControl.State.normal)
-                button.backgroundColor = #colorLiteral(red: 1, green: 1, blue: 1, alpha: 1) // pic background
+                cardButtons[i].setBackgroundImage(UIImage(named: card.imageName), for: UIControl.State.normal)
+                cardButtons[i].backgroundColor = #colorLiteral(red: 1, green: 1, blue: 1, alpha: 1) // pic background
             }
+            i += 1
         }
-        var castInt = Int(movesCounter)
-        abel.text = "Moves: \(castInt)"
+    }
         
-        if isGameOver{
-            for index in cardButtons.indices{
-                cardButtons[index].backgroundColor = #colorLiteral(red: 0.06274510175, green: 0, blue: 0.1921568662, alpha: 0.3961542694)
-         
-                
+        func updateLabelsDisplay(){
+            var castInt = Int(movesCounter)
+            abel.text = "Moves: \(castInt)"
+            
+            if isGameOver{
+                for index in cardButtons.indices{
+                    cardButtons[index].backgroundColor = #colorLiteral(red: 0.06274510175, green: 0, blue: 0.1921568662, alpha: 0.3961542694)
+                }
+                labelFinishedGame.text = ""
+                labelFinishedGame.text  = "congulations!!!"
+                labelFinishedGame.isHidden = false
+            } else {
+                labelFinishedGame.isHidden = true
             }
-            abel.text = ""
-            labelFinishedGame.text  = "Done. Another?"
-            labelFinishedGame.isHidden = false
-        } else {
-            labelFinishedGame.isHidden = true
         }
         
     }
-}
+
 
