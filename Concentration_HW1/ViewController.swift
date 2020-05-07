@@ -12,13 +12,11 @@ import UIKit
 class ViewController: UIViewController {
     
     @IBOutlet private var cardButtons: [UIButton]!
+    @IBOutlet weak var labelFinishedGame: UILabel!
+    @IBOutlet weak var abel: UILabel!
     
-    @IBOutlet weak var labelScore: UILabel!
-    @IBOutlet weak var labelCongrats: UILabel!
-    @IBOutlet weak var flipCountrLabel: UILabel!
-    
-    private var cards = [Card]()
-    
+    private var cardsArray = [Card]()
+    private var numOfPairs: Int!
     private var indexOfOneAndOnlyFaceUpCard: Int?
     private var previouslySeenCards: [Int:Int]!
     private var movesCounter : Double = 0
@@ -28,79 +26,58 @@ class ViewController: UIViewController {
     var playableEmoji = [Int:UIImage]()
     override func viewDidLoad() {
         super.viewDidLoad()
-    
+        numOfPairs = (cardButtons.count + 1) / 2
+
         
-        var numberOfPairsOfCards = (cardButtons.count + 1) / 2
-        let numberOfCards = numberOfPairsOfCards * 2
-        var allIndexes =  [Int](0..<numberOfCards)
-        var emptyCardsArray: [Card?] = Array(repeating: nil, count: numberOfCards)
         previouslySeenCards = Dictionary<Int, Int>()
-        
-        for _ in 1...numberOfPairsOfCards {
-            var firstRandomCardIndex = Int(arc4random_uniform(UInt32(allIndexes.count)))
-            firstRandomCardIndex = allIndexes.remove(at: firstRandomCardIndex)
-            var secondRandomCardIndex = Int(arc4random_uniform(UInt32(allIndexes.count)))
-            secondRandomCardIndex = allIndexes.remove(at: secondRandomCardIndex)
-            
-            let card = Card()
-            emptyCardsArray[firstRandomCardIndex] = card
-            emptyCardsArray[secondRandomCardIndex] = card
-            cards = emptyCardsArray.compactMap{$0}
-        }
-        
+        divideImagesForCards()
+  
         for index in cardButtons.indices{
-            let card = cards[index] // get the coresponding card from model
+            let card = cardsArray[index] // get the coresponding card from model
             let button = cardButtons[index]
             button.setBackgroundImage(#imageLiteral(resourceName: "depositphotos_294620642-stock-illustration-cute-safari-background-with-monkeyleaves (1)") , for: UIControl.State.normal)
             button.backgroundColor = card.matching ?  ( #colorLiteral(red: 0.06274510175, green: 0, blue: 0.1921568662, alpha: 0.3961542694) ): #colorLiteral(red: 0.4666666687, green: 0.7647058964, blue: 0.2666666806, alpha: 1)
-            
         }
         var castInt = Int(movesCounter)
-        flipCountrLabel.text = "Moves: \(castInt)"
-        
+        abel.text = "Moves: \(castInt)"
         if isGameOver{
             for index in cardButtons.indices{
                 cardButtons[index].backgroundColor = #colorLiteral(red: 0.06274510175, green: 0, blue: 0.1921568662, alpha: 0.3961542694)
-                
-                //    cardButtons[index].setTitle("", for: UIControl.State.normal)
-                
-                
             }
-            flipCountrLabel.text = ""
-            labelCongrats.text  = "Done. Another?"
-            labelCongrats.isHidden = false
+        //    flipCountrLabel.text = ""
+            labelFinishedGame.text  = "Done. Another?"
+            labelFinishedGame.isHidden = false
         } else {
-            labelCongrats.isHidden = true
+            labelFinishedGame.isHidden = true
         }
-        
-    }
+    } //viewDidLoad
     
     
     @IBAction func cardClicked(_ sender: UIButton) {
         let idCardClicked = cardButtons.index(of: sender)
         
         //if the card not matched yet and he close now ->
-        if (cards[idCardClicked!].matching == false && cards[idCardClicked!].isClosed) {
+        if (cardsArray[idCardClicked!].matching == false && cardsArray[idCardClicked!].isClosed) {
             movesCounter += 0.5
             if let matchIndex = indexOfOneAndOnlyFaceUpCard, matchIndex != idCardClicked {
-                if cards[matchIndex].id == cards[idCardClicked!].id{
-                    cards[matchIndex].matching = true
-                    cards[idCardClicked!].matching = true
+                if cardsArray[matchIndex].imageName == cardsArray[idCardClicked!].imageName{
+                    cardsArray[matchIndex].matching = true
+                    cardsArray[idCardClicked!].matching = true
                     
                 } else{
-                    previouslySeenCards[cards[idCardClicked!].id] = (previouslySeenCards[cards[idCardClicked!].id] ?? -1) + 1
-                    previouslySeenCards[cards[matchIndex].id] = (previouslySeenCards[cards[matchIndex].id] ?? -1) + 1
+                    previouslySeenCards[cardsArray[idCardClicked!].id] = (previouslySeenCards[cardsArray[idCardClicked!].id] ?? -1) + 1
+                    previouslySeenCards[cardsArray[matchIndex].id] = (previouslySeenCards[cardsArray[matchIndex].id] ?? -1) + 1
                 }
-                cards[idCardClicked!].isClosed = false
+                cardsArray[idCardClicked!].isClosed = false
                 indexOfOneAndOnlyFaceUpCard = nil
             } else {
-                for flipDownCards in cards.indices{
-                    cards[flipDownCards].isClosed = true
+                for flipDownCards in cardsArray.indices{
+                    cardsArray[flipDownCards].isClosed = true
                 }
-                cards[idCardClicked!].isClosed = false
+                cardsArray[idCardClicked!].isClosed = false
                 indexOfOneAndOnlyFaceUpCard = idCardClicked
             }
-               let matched = cards.filter({!$0.matching}).count
+               let matched = cardsArray.filter({!$0.matching}).count
                  if  matched == 0 {
                      self.isGameOver = true
                  }
@@ -120,32 +97,34 @@ class ViewController: UIViewController {
     @IBAction func newGame(_ sender: Any) {
         movesCounter=0
         Card.resetIdentifiers()
-        var numberOfPairsOfCards = (cardButtons.count + 1) / 2
-        let numberOfCards = numberOfPairsOfCards * 2
-        var allIndexes =  [Int](0..<numberOfCards)
-        var emptyCardsArray: [Card?] = Array(repeating: nil, count: numberOfCards)
-        
-        for _ in 1...numberOfPairsOfCards {
-            var firstRandomCardIndex = Int(arc4random_uniform(UInt32(allIndexes.count)))
-            firstRandomCardIndex = allIndexes.remove(at: firstRandomCardIndex)
-            var secondRandomCardIndex = Int(arc4random_uniform(UInt32(allIndexes.count)))
-            secondRandomCardIndex = allIndexes.remove(at: secondRandomCardIndex)
-            
-            let card = Card()
-            emptyCardsArray[firstRandomCardIndex] = card
-            emptyCardsArray[secondRandomCardIndex] = card
-            cards = emptyCardsArray.compactMap{$0}
-        }
-        //              game = Concentration(numberOfPairsOfCards: (cardButtons.count + 1) / 2 )
-        //              emojiChoices = setTheme()
+        cardsArray.removeAll()
+        divideImagesForCards()
         displayUpdate()
-        print("new game")
+    }
+    
+    
+    func divideImagesForCards() {
+        for i in 1...numOfPairs {
+                    var card1 = Card()
+                    card1.imageName = "card_\(i)"
+                    print(card1.imageName)
+                    
+                    //create second card:
+                    var card2 = Card()
+                    card2.imageName = "card_\(i)"
+                    print(card2.imageName)
+                    
+                    cardsArray.append(card1)
+                    cardsArray.append(card2)
+                    
+                }
+                cardsArray.shuffle()
     }
     
     
     func displayUpdate(){
         for index in cardButtons.indices{
-            let card = cards[index] // get the coresponding card from model
+            let card = cardsArray[index] // get the coresponding card from model
             let button = cardButtons[index]
             
             if card.isClosed{
@@ -158,13 +137,14 @@ class ViewController: UIViewController {
                     button.backgroundColor = card.matching ?  (  #colorLiteral(red: 0.06274510175, green: 0, blue: 0.1921568662, alpha: 0.3961542694) ): #colorLiteral(red: 0.4666666687, green: 0.7647058964, blue: 0.2666666806, alpha: 1) //
                 }
             } else {
-                button.setBackgroundImage(emoji(for: card), for: UIControl.State.normal)
+                var imageForCard = cardsArray[index].imageName
+                print("image for cars issss \(imageForCard)")
+                button.setBackgroundImage(UIImage(named: imageForCard), for: UIControl.State.normal)
                 button.backgroundColor = #colorLiteral(red: 1, green: 1, blue: 1, alpha: 1) // pic background
             }
         }
         var castInt = Int(movesCounter)
-        flipCountrLabel.text = "Moves: \(castInt)"
-        //    labelScore.text = "Score: \(score)"
+        abel.text = "Moves: \(castInt)"
         
         if isGameOver{
             for index in cardButtons.indices{
@@ -172,11 +152,11 @@ class ViewController: UIViewController {
          
                 
             }
-            flipCountrLabel.text = ""
-            labelCongrats.text  = "Done. Another?"
-            labelCongrats.isHidden = false
+            abel.text = ""
+            labelFinishedGame.text  = "Done. Another?"
+            labelFinishedGame.isHidden = false
         } else {
-            labelCongrats.isHidden = true
+            labelFinishedGame.isHidden = true
         }
         
     }

@@ -244,8 +244,8 @@
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
                     </view>
                     <connections>
-                        <outlet property="flipCountrLabel" destination="x1w-Pi-KkB" id="oGf-qQ-DlA"/>
-                        <outlet property="labelCongrats" destination="6nx-Hc-MXs" id="frI-GC-cBu"/>
+                        <outlet property="abel" destination="x1w-Pi-KkB" id="oGf-qQ-DlA"/>
+                        <outlet property="labelFinishedGame" destination="6nx-Hc-MXs" id="frI-GC-cBu"/>
                         <outletCollection property="cardButtons" destination="5Gf-fH-CGl" collectionClass="NSMutableArray" id="wRf-gi-zym"/>
                         <outletCollection property="cardButtons" destination="ydf-5Y-cYC" collectionClass="NSMutableArray" id="b7d-nP-Ypz"/>
                         <outletCollection property="cardButtons" destination="Aqz-ti-7JS" collectionClass="NSMutableArray" id="8Pm-Vi-hBQ"/>
