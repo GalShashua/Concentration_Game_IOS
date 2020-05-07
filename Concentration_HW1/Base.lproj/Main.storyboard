@@ -204,10 +204,17 @@
                                                 <color key="shadowColor" systemColor="systemGreenColor" red="0.20392156859999999" green="0.78039215689999997" blue="0.34901960780000002" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                             </label>
                                             <label hidden="YES" opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="6nx-Hc-MXs">
-                                                <rect key="frame" x="41" y="29" width="333" height="171"/>
+                                                <rect key="frame" x="41" y="0.0" width="333" height="171"/>
                                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES" flexibleMaxY="YES"/>
                                                 <fontDescription key="fontDescription" type="system" pointSize="30"/>
                                                 <color key="textColor" systemColor="systemOrangeColor" red="1" green="0.58431372550000005" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                                <nil key="highlightedColor"/>
+                                            </label>
+                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="timer" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ilD-aX-jKI">
+                                                <rect key="frame" x="0.0" y="176" width="414" height="20.5"/>
+                                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                <nil key="textColor"/>
                                                 <nil key="highlightedColor"/>
                                             </label>
                                             <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Qul-Ld-bGp">
@@ -244,8 +251,9 @@
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
                     </view>
                     <connections>
-                        <outlet property="abel" destination="x1w-Pi-KkB" id="oGf-qQ-DlA"/>
                         <outlet property="labelFinishedGame" destination="6nx-Hc-MXs" id="frI-GC-cBu"/>
+                        <outlet property="labelMovesCounter" destination="x1w-Pi-KkB" id="oGf-qQ-DlA"/>
+                        <outlet property="labelTimer" destination="ilD-aX-jKI" id="eo8-9p-rEC"/>
                         <outletCollection property="cardButtons" destination="5Gf-fH-CGl" collectionClass="NSMutableArray" id="wRf-gi-zym"/>
                         <outletCollection property="cardButtons" destination="ydf-5Y-cYC" collectionClass="NSMutableArray" id="b7d-nP-Ypz"/>
                         <outletCollection property="cardButtons" destination="Aqz-ti-7JS" collectionClass="NSMutableArray" id="8Pm-Vi-hBQ"/>

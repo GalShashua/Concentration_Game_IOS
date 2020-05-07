@@ -11,21 +11,21 @@ import Foundation
 struct Card{
     var isClosed = true
     var wasMatched = false
-    var imageName = ""
+    var cardImage = ""
     var id: Int
     
     static var idGenerator = 0
 
     init(){
-        self.id = Card.getUniqueIdentifier()
+        self.id = Card.setCardId()
     }
     
-    static func getUniqueIdentifier() -> Int {
+    static func setCardId() -> Int {
         idGenerator += 1
         return idGenerator
     }
     
-    static func resetIdentifiers(){
+    static func resetCardIds(){
         idGenerator = 0
     }
 
