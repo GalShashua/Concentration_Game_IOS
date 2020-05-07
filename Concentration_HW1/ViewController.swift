@@ -15,6 +15,7 @@ class ViewController: UIViewController {
     @IBOutlet weak var labelFinishedGame: UILabel!
     @IBOutlet weak var labelMovesCounter: UILabel!
     @IBOutlet weak var labelTimer: UILabel!
+    @IBOutlet weak var labelNumOfPairsMatched: UILabel!
     
     private var cardsArray = [Card]()
     private var numOfPairs: Int!
@@ -32,7 +33,7 @@ class ViewController: UIViewController {
         divideImagesBetweenCards()
         updateCardDisplay()
         updateLabelsDisplay()
-        timer = Timer.scheduledTimer(timeInterval: 1.0, target: self, selector: #selector(changeTimerLabel), userInfo: nil, repeats: true)
+        startTimer()
     }
     
     @objc func changeTimerLabel() {
@@ -47,6 +48,12 @@ class ViewController: UIViewController {
         divideImagesBetweenCards()
         updateCardDisplay()
         labelFinishedGame.text = ""
+        labelNumOfPairsMatched.text = "0 from \(numOfPairs!)"
+        startTimer()
+    }
+    
+    func startTimer() {
+           timer = Timer.scheduledTimer(timeInterval: 1.0, target: self, selector: #selector(changeTimerLabel), userInfo: nil, repeats: true)
     }
     
     
@@ -63,14 +70,14 @@ class ViewController: UIViewController {
     }
     
     
-    func checkIfAllCardsMatched() -> Bool{
+    func checkHowMuchCardsMatched() -> Int{
         var counterMatchedCards : Int = 0
         for card in cardsArray {
             if card.wasMatched {
                 counterMatchedCards += 1
             }
         }
-        return counterMatchedCards==cardsArray.count
+        return counterMatchedCards
     }
     
     func updateCardDisplay(){
@@ -93,9 +100,11 @@ class ViewController: UIViewController {
         
         func updateLabelsDisplay(){
             labelMovesCounter.text = "Moves: \(Int(movesCounter))"
+            labelNumOfPairsMatched.text = "\(checkHowMuchCardsMatched()/2) from \(numOfPairs!)"
             if isGameOver{
                 for index in cardButtons.indices{
                     cardButtons[index].backgroundColor = #colorLiteral(red: 1, green: 1, blue: 1, alpha: 1)
+                    timer.invalidate()
                 }
                 labelFinishedGame.text  = "congratulation!!!"
                 labelFinishedGame.isHidden = false
@@ -129,7 +138,7 @@ class ViewController: UIViewController {
                 cardsArray[idCardClicked!].isClosed = false
                 rememberLastIdCard = idCardClicked
             }
-                 if checkIfAllCardsMatched() {
+                 if checkHowMuchCardsMatched()==cardsArray.count {
                      self.isGameOver = true
                  }
         }
