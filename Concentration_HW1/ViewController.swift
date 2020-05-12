@@ -24,6 +24,8 @@ class ViewController: UIViewController {
     private var movesCounter : Double = 0
     private var isGameOver = false
     private var imagesArray = [#imageLiteral(resourceName: "card_5"),#imageLiteral(resourceName: "card_6"),#imageLiteral(resourceName: "card_2"),#imageLiteral(resourceName: "card_8"),#imageLiteral(resourceName: "card_4"),#imageLiteral(resourceName: "card_1"),#imageLiteral(resourceName: "card_7"),#imageLiteral(resourceName: "card_3")]
+    
+    var countDownTimer : Float = 0
     var timer : Timer!
     var timerCounter = 0
     
@@ -33,13 +35,9 @@ class ViewController: UIViewController {
         divideImagesBetweenCards()
         updateCardDisplay()
         updateLabelsDisplay()
-        startTimer()
+        resetTimer()
     }
     
-    @objc func changeTimerLabel() {
-        timerCounter += 1
-        labelTimer.text = String(timerCounter)
-    }
     
     @IBAction func newGame(_ sender: Any) {
         movesCounter=0
@@ -47,26 +45,26 @@ class ViewController: UIViewController {
         cardsArray.removeAll()
         divideImagesBetweenCards()
         updateCardDisplay()
-        labelFinishedGame.text = ""
-        labelNumOfPairsMatched.text = "0 from \(numOfPairs!)"
-        startTimer()
-    }
-    
-    func startTimer() {
-           timer = Timer.scheduledTimer(timeInterval: 1.0, target: self, selector: #selector(changeTimerLabel), userInfo: nil, repeats: true)
+        labelMovesCounter.text="Moves : 0"
+        labelNumOfPairsMatched.text = "\t\t  0 / \(numOfPairs!)"
+        labelFinishedGame.text=""
+        isGameOver=false
+        timer.invalidate()
+        resetTimer()
+        releaseCardsWhenGameStarted()
     }
     
     
     func divideImagesBetweenCards() {
         for i in 1...numOfPairs {
-                    var card1 = Card()
-                    card1.cardImage = "card_\(i)"
-                    var card2 = Card()
-                    card2.cardImage = "card_\(i)"
-                    cardsArray.append(card1)
-                    cardsArray.append(card2)
-                }
-                cardsArray.shuffle()
+            var card1 = Card()
+            card1.cardImage = "card_\(i)"
+            var card2 = Card()
+            card2.cardImage = "card_\(i)"
+            cardsArray.append(card1)
+            cardsArray.append(card2)
+        }
+        cardsArray.shuffle()
     }
     
     
@@ -97,21 +95,34 @@ class ViewController: UIViewController {
             i += 1
         }
     }
-        
-        func updateLabelsDisplay(){
-            labelMovesCounter.text = "Moves: \(Int(movesCounter))"
-            labelNumOfPairsMatched.text = "\(checkHowMuchCardsMatched()/2) from \(numOfPairs!)"
-            if isGameOver{
-                for index in cardButtons.indices{
-                    cardButtons[index].backgroundColor = #colorLiteral(red: 1, green: 1, blue: 1, alpha: 1)
-                    timer.invalidate()
-                }
-                labelFinishedGame.text  = "congratulation!!!"
-                labelFinishedGame.isHidden = false
-            } else {
-                labelFinishedGame.isHidden = true
-            }
+    
+    func blockedCardsWhenGameOver(){
+        for card in cardButtons {
+            card.isEnabled=false
         }
+    }
+    
+    func releaseCardsWhenGameStarted() {
+        for card in cardButtons {
+            card.isEnabled=true
+        }
+    }
+    
+    func updateLabelsDisplay(){
+        labelMovesCounter.text = "Moves: \(Int(movesCounter))"
+        labelNumOfPairsMatched.text = "\t\t  \(checkHowMuchCardsMatched()/2) / \(numOfPairs!)"
+        if isGameOver{
+            labelFinishedGame.text="GAME OVER!"
+            blockedCardsWhenGameOver()
+            for index in cardButtons.indices{
+                cardButtons[index].backgroundColor = #colorLiteral(red: 1, green: 1, blue: 1, alpha: 1)
+                timer.invalidate()
+            }
+        } else {
+            labelFinishedGame.text=""
+            
+        }
+    }
     
     @IBAction func cardClicked(_ sender: UIButton) {
         previouslySeenCards = Dictionary<Int, Int>()
@@ -120,7 +131,7 @@ class ViewController: UIViewController {
         //if the card not matched yet and he close now ->
         if (cardsArray[idCardClicked!].isClosed && cardsArray[idCardClicked!].wasMatched == false) {
             movesCounter += 0.5 // 1 move is after opened 2 cards
-    
+            
             if let matchIndex = rememberLastIdCard, matchIndex != idCardClicked {
                 if cardsArray[matchIndex].cardImage == cardsArray[idCardClicked!].cardImage{
                     cardsArray[matchIndex].wasMatched = true
@@ -138,14 +149,31 @@ class ViewController: UIViewController {
                 cardsArray[idCardClicked!].isClosed = false
                 rememberLastIdCard = idCardClicked
             }
-                 if checkHowMuchCardsMatched()==cardsArray.count {
-                     self.isGameOver = true
-                 }
+            if checkHowMuchCardsMatched()==cardsArray.count {
+                self.isGameOver = true
+            }
         }
         updateCardDisplay()
         updateLabelsDisplay()
     }
-        
+    func resetTimer() {
+        countDownTimer = 70 * 1000
+        timer = Timer.scheduledTimer(timeInterval: 0.001, target: self, selector: #selector(changeTimerLabel), userInfo: nil, repeats: true)
     }
+    
+    @objc func changeTimerLabel() {
+        countDownTimer -= 1
+        let seconds = String(format : "%.0f", countDownTimer / 1000)
+        self.labelTimer.text = "Time To Win: \(seconds)"
+        if countDownTimer <= 0{
+            timer.invalidate()
+            labelFinishedGame.text="GAME OVER!"
+            blockedCardsWhenGameOver()
+        }
+    }
+    
+}
+
+
 
 
