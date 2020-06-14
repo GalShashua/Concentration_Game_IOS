@@ -1,10 +1,7 @@
 import UIKit
-import CoreLocation
 
-class ViewController: UIViewController {
-    
+class HardGame: UIViewController {
     // MARK: - IBOutlets & vars
-    
     @IBOutlet private var cardButtons: [UIButton]!
     @IBOutlet weak var labelFinishedGame: UILabel!
     @IBOutlet weak var labelMovesCounter: UILabel!
@@ -19,10 +16,10 @@ class ViewController: UIViewController {
     private var previouslySeenCards: [Int:Int]!
     private var movesCounter : Double = 0
     private var isGameOver = false
-    private var imagesArray = [#imageLiteral(resourceName: "card_5"),#imageLiteral(resourceName: "card_6"),#imageLiteral(resourceName: "card_2"),#imageLiteral(resourceName: "card_8"),#imageLiteral(resourceName: "card_4"),#imageLiteral(resourceName: "card_1"),#imageLiteral(resourceName: "card_7"),#imageLiteral(resourceName: "card_3")]
+    private var imagesArray = [#imageLiteral(resourceName: "card_5"),#imageLiteral(resourceName: "card_6"),#imageLiteral(resourceName: "card_2"),#imageLiteral(resourceName: "card_8"),#imageLiteral(resourceName: "card_4"),#imageLiteral(resourceName: "card_1"),#imageLiteral(resourceName: "card_7"),#imageLiteral(resourceName: "card_3"),#imageLiteral(resourceName: "botanical"),#imageLiteral(resourceName: "btn")]
     var timer: Timer?
     var time: Int = 0
-    
+   
     // MARK: - Game logic
 
     override func viewDidLoad() {
@@ -89,7 +86,8 @@ class ViewController: UIViewController {
             labelFinishedGame.text="GAME OVER!"
             blockedCardsWhenGameOver()
             timer?.invalidate()
-            gameLogic.alertWithTF(viewController: self, time: (time-1), lat: self.lat ?? 0, lng: self.lng ?? 0, gameType: "Easy")
+            gameLogic.alertWithTF(viewController: self, time: (time-1), lat: self.lat ?? 0, lng: self.lng ?? 0,  gameType: "Hard")
+            
             for index in cardButtons.indices{
                 cardButtons[index].backgroundColor = #colorLiteral(red: 1, green: 1, blue: 1, alpha: 1)
             }
@@ -97,7 +95,7 @@ class ViewController: UIViewController {
             labelFinishedGame.text=""
         }
     }
-        
+    
     @IBAction func cardClicked(_ sender: UIButton) {
         let gameLogic = GameLogic()
         previouslySeenCards = Dictionary<Int, Int>()
@@ -132,7 +130,7 @@ class ViewController: UIViewController {
     }
     
     // MARK: - Timer
-
+    
     private func resetTimer() {
         self.time = 0
         self.timer = Timer.scheduledTimer(timeInterval: 1.0, target: self, selector: #selector(changeTimerLabel), userInfo: nil, repeats: true)
@@ -152,16 +150,17 @@ class ViewController: UIViewController {
             }
         }
     }
-
+    
     // MARK: - Back to home page
-
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        if(segue.identifier == "fromEasyToMain") {
-            _ = segue.destination as! FirstPage
-        }
+    
+    @IBAction func backToMainPage(_ sender: Any) {
+        self.performSegue(withIdentifier: "fromHardToMain", sender: self)
     }
     
-    @IBAction func backToMain(_ sender: Any) {
-        self.performSegue(withIdentifier: "fromEasyToMain", sender: self)
+    
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        if(segue.identifier == "fromHardToMain") {
+            _ = segue.destination as! FirstPage
+        }
     }
 }

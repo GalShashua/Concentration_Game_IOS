@@ -9,6 +9,8 @@
 import Foundation
 
 struct Card{
+    private var cardsArray = [Card]()
+
     var isClosed = true
     var wasMatched = false
     var cardImage = ""
@@ -28,5 +30,19 @@ struct Card{
     static func resetCardIds(){
         idGenerator = 0
     }
+    
+
+    mutating func divideImagesBetweenCards(numOfPairs : Int) -> [Card] {
+        for i in 1...numOfPairs {
+            var card1 = Card()
+            card1.cardImage = "card_\(i)"
+            var card2 = Card()
+            card2.cardImage = "card_\(i)"
+            cardsArray.append(card1)
+            cardsArray.append(card2)
+        }
+        return cardsArray
+    }
+
 
 }

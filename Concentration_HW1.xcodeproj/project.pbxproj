@@ -7,6 +7,11 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		C05BF06F247D166600F3E578 /* HardGame.swift in Sources */ = {isa = PBXBuildFile; fileRef = C05BF06E247D166600F3E578 /* HardGame.swift */; };
+		C05BF071247D244A00F3E578 /* FirstPage.swift in Sources */ = {isa = PBXBuildFile; fileRef = C05BF070247D244A00F3E578 /* FirstPage.swift */; };
+		C05BF075247D5EEC00F3E578 /* Player.swift in Sources */ = {isa = PBXBuildFile; fileRef = C05BF074247D5EEC00F3E578 /* Player.swift */; };
+		C05BF077247D71F800F3E578 /* TopPlayers.swift in Sources */ = {isa = PBXBuildFile; fileRef = C05BF076247D71F800F3E578 /* TopPlayers.swift */; };
+		C05BF079247D7A6100F3E578 /* MyCustomCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C05BF078247D7A6100F3E578 /* MyCustomCell.swift */; };
 		C0903258245C58E8008F9659 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0903257245C58E8008F9659 /* AppDelegate.swift */; };
 		C090325A245C58E8008F9659 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0903259245C58E8008F9659 /* SceneDelegate.swift */; };
 		C090325C245C58E8008F9659 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C090325B245C58E8008F9659 /* ViewController.swift */; };
@@ -14,9 +19,15 @@
 		C0903261245C58E9008F9659 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = C0903260245C58E9008F9659 /* Assets.xcassets */; };
 		C0903264245C58E9008F9659 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = C0903262245C58E9008F9659 /* LaunchScreen.storyboard */; };
 		C09FBCDA245F430D00EA7E8E /* Card.swift in Sources */ = {isa = PBXBuildFile; fileRef = C09FBCD9245F430D00EA7E8E /* Card.swift */; };
+		C0D2624E24837BB600DD2C30 /* GameLogic.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0D2624D24837BB600DD2C30 /* GameLogic.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		C05BF06E247D166600F3E578 /* HardGame.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HardGame.swift; sourceTree = "<group>"; };
+		C05BF070247D244A00F3E578 /* FirstPage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirstPage.swift; sourceTree = "<group>"; };
+		C05BF074247D5EEC00F3E578 /* Player.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Player.swift; sourceTree = "<group>"; };
+		C05BF076247D71F800F3E578 /* TopPlayers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TopPlayers.swift; sourceTree = "<group>"; };
+		C05BF078247D7A6100F3E578 /* MyCustomCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyCustomCell.swift; sourceTree = "<group>"; };
 		C0903254245C58E8008F9659 /* Concentration_HW1.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Concentration_HW1.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		C0903257245C58E8008F9659 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		C0903259245C58E8008F9659 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -26,6 +37,7 @@
 		C0903263245C58E9008F9659 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		C0903265245C58E9008F9659 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		C09FBCD9245F430D00EA7E8E /* Card.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Card.swift; sourceTree = "<group>"; };
+		C0D2624D24837BB600DD2C30 /* GameLogic.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameLogic.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -58,6 +70,7 @@
 		C0903256245C58E8008F9659 /* Concentration_HW1 */ = {
 			isa = PBXGroup;
 			children = (
+				C05BF06E247D166600F3E578 /* HardGame.swift */,
 				C0903257245C58E8008F9659 /* AppDelegate.swift */,
 				C0903259245C58E8008F9659 /* SceneDelegate.swift */,
 				C090325B245C58E8008F9659 /* ViewController.swift */,
@@ -66,6 +79,11 @@
 				C0903262245C58E9008F9659 /* LaunchScreen.storyboard */,
 				C0903265245C58E9008F9659 /* Info.plist */,
 				C09FBCD9245F430D00EA7E8E /* Card.swift */,
+				C05BF074247D5EEC00F3E578 /* Player.swift */,
+				C05BF070247D244A00F3E578 /* FirstPage.swift */,
+				C05BF076247D71F800F3E578 /* TopPlayers.swift */,
+				C05BF078247D7A6100F3E578 /* MyCustomCell.swift */,
+				C0D2624D24837BB600DD2C30 /* GameLogic.swift */,
 			);
 			path = Concentration_HW1;
 			sourceTree = "<group>";
@@ -141,10 +159,16 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				C05BF079247D7A6100F3E578 /* MyCustomCell.swift in Sources */,
 				C090325C245C58E8008F9659 /* ViewController.swift in Sources */,
 				C0903258245C58E8008F9659 /* AppDelegate.swift in Sources */,
+				C05BF06F247D166600F3E578 /* HardGame.swift in Sources */,
 				C090325A245C58E8008F9659 /* SceneDelegate.swift in Sources */,
+				C05BF075247D5EEC00F3E578 /* Player.swift in Sources */,
 				C09FBCDA245F430D00EA7E8E /* Card.swift in Sources */,
+				C05BF077247D71F800F3E578 /* TopPlayers.swift in Sources */,
+				C0D2624E24837BB600DD2C30 /* GameLogic.swift in Sources */,
+				C05BF071247D244A00F3E578 /* FirstPage.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
